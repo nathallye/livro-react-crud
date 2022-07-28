@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Menu from "../components/Menu";
 import TabelaLivros from "../components/TabelaLivros";
@@ -31,6 +31,13 @@ class App extends Component {
     ]
   }
 
+  inserirLivro = (livro) => {
+    livro.id = this.state.livros.length + 1;
+    this.setState({
+      livro: [...this.state.livros, livro]
+    });
+  };
+
   render() {
     return (
       <Router >
@@ -40,7 +47,28 @@ class App extends Component {
             element={<TabelaLivros livros={this.state.livros} />}
           />
           <Route exact path="/cadastrar"
-            element={<CadastrarLivros />}
+            element={<CadastrarLivros 
+            inserirLivro={this.inserirLivro}
+            livro={{id: 0, isbn: "", titulo: "", autor: ""}}
+            />}
+          />
+          <Route exact path="/editar/:isbnLivro" 
+            element={props => {
+              const livro = this.state.livros.find(
+                livro => livro.isbn === props.math.params.isbnLivro
+              );
+
+              if (livro) {
+                return (
+                  <CadastrarLivros 
+                    editarLivro={this.editarLivro}
+                    livro={livro}
+                  />
+                );
+              } else {
+                return <Navigate to="/" />;
+              }
+            }}
           />
           <Route path="*"
             element={<NotFound />}

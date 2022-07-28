@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TabelaLivros = ({ livros }) => { // recebe livros de props, diretamente
   return (
@@ -25,7 +26,9 @@ const TabelaLivros = ({ livros }) => { // recebe livros de props, diretamente
                 <td>{livro.titulo}</td>
                 <td>{livro.autor}</td>
                 <td>
-                  <button className="botao editar">Editar</button>
+                  <button className="botao editar">
+                    <Link to={`/editar/${livro.isbn}`}>Editar</Link> {/*Link para a página editar do livro em questão, identificado pelo isbn*/}
+                  </button>
                 </td>
                 <td>
                   <button className="botao remover">Remover</button>
