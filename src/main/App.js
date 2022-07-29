@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { 
+  BrowserRouter as Router, 
+  Routes, 
+  Route, 
+  Navigate,
+  useParams
+} from "react-router-dom";
 
 import Menu from "../components/Menu";
 import TabelaLivros from "../components/TabelaLivros";
@@ -38,6 +44,17 @@ class App extends Component {
     });
   };
 
+  editarLivro = (livro) => {
+    const index = this.state.livros.findIndex((p) => p.id === livro.id);
+    const livros = this.state.livros
+      .slice(0, index)
+      .concat(this.state.livros.slice(index + 1));
+    const newLivros = [...livros, livro].sort((a, b) => a.id - b.id);
+    this.setState({
+      livros: newLivros,
+    });
+  };
+
   render() {
     return (
       <Router >
@@ -53,22 +70,7 @@ class App extends Component {
             />}
           />
           <Route exact path="/editar/:isbnLivro" 
-            element={props => {
-              const livro = this.state.livros.find(
-                livro => livro.isbn === props.math.params.isbnLivro
-              );
-
-              if (livro) {
-                return (
-                  <CadastrarLivros 
-                    editarLivro={this.editarLivro}
-                    livro={livro}
-                  />
-                );
-              } else {
-                return <Navigate to="/" />;
-              }
-            }}
+            element={<EditarLivros livros={this.state.livros} editarLivro={this.editarLivro}/>}
           />
           <Route path="*"
             element={<NotFound />}
@@ -80,3 +82,25 @@ class App extends Component {
 }
 
 export default App;
+
+// link documentação https://reactrouter.com/docs/en/v6/hooks/use-params
+
+const EditarLivros = (props) => {
+  let { isbnLivro } = useParams();
+
+  const livro = props.livros.find(
+    (livro) => livro.isbn === isbnLivro
+  );
+
+  if (livro) {
+    return (
+      <CadastrarLivros 
+        editarLivro={props.editarLivro}
+        livro={livro}
+      />
+    );
+  } else {
+    return <Navigate to="/" />;
+  }
+};
+
