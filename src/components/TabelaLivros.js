@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const TabelaLivros = ({ livros }) => { // recebe livros de props, diretamente
+const TabelaLivros = ({ livros, removerLivro }) => { // recebe o objeto "livros" e a função "removerLivro" de props, diretamente
   return (
     <div>
       <h1>Tabela de livros</h1>
@@ -31,7 +31,10 @@ const TabelaLivros = ({ livros }) => { // recebe livros de props, diretamente
                   </button>
                 </td>
                 <td>
-                  <button className="botao remover">Remover</button>
+                  <button className="botao remover"
+                    onClick={ () => {removerLivro(livro)} }>
+                    Remover
+                  </button>
                 </td>
               </tr>
             ))}

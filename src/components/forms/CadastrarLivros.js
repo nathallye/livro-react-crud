@@ -13,7 +13,7 @@ class CadastrarLivros extends Component {
     redirecionar: false
   };
 
-  handleInserirLivro = e => {
+  handleInserirLivro = (e) => {
     e.preventDefault();
     if (this.props.editarLivro) {
       this.props.editarLivro(this.state.livro);
@@ -22,14 +22,6 @@ class CadastrarLivros extends Component {
     }
     this.setState({ redirecionar: true });
   };
-
-  textoBotao = () => {
-    if (this.props.editarLivro) {
-      return "Salvar";
-    } else {
-      return "Cadastrar";
-    }
-  }
 
   render() {
     if (this.state.redirecionar === true) {
@@ -51,7 +43,7 @@ class CadastrarLivros extends Component {
             required 
             pattern="^978-85-7522-[0-9]{3}-[0-9]{1}$"
             value={this.state.livro.isbn}
-            onChange={e =>
+            onChange={(e) =>
               this.setState({
                 livro: {
                   ...this.state.livro,
@@ -69,7 +61,7 @@ class CadastrarLivros extends Component {
             id="ftitulo" 
             required 
             value={this.state.livro.titulo}
-            onChange={e =>
+            onChange={(e) =>
               this.setState({
                 livro: {
                   ...this.state.livro,
@@ -87,7 +79,7 @@ class CadastrarLivros extends Component {
             id="fautor" 
             required 
             value={this.state.livro.autor}
-            onChange={e =>
+            onChange={(e) =>
               this.setState({
                 livro: {
                   ...this.state.livro,
@@ -99,7 +91,7 @@ class CadastrarLivros extends Component {
         </p>
         <p>
           <button type="submit" className="botao cadastrar">
-            Cadastrar
+            {this.props.textoBotao}
           </button>
         </p>
       </form>
